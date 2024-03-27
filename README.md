@@ -39,8 +39,8 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## ERD diagram
+## ER diagram
 
 <p align="center">
-  <a href="#" target="blank"><img src="./docs/erd-diagram.png" width="100%" alt="Fincheck logo"/></a>
+  <a href="#" target="blank"><img src="./docs/er-diagram.png" width="100%" alt="Fincheck logo"/></a>
 </p>
