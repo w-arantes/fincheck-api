@@ -7,8 +7,8 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 
 import { UsersRepository } from 'src/shared/database/repositories/users.repository';
-import { AuthenticateDTO } from './dtos/auth.dto';
-import { SignUpDTO } from './dtos/sign-up-dto';
+import { SignInDTO } from './dtos/sign-in.dto';
+import { SignUpDTO } from './dtos/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,8 +17,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async authenticate(authenticateDto: AuthenticateDTO) {
-    const { email, password } = authenticateDto;
+  private generateAccessToken(userId: string) {
+    return this.jwtService.signAsync({ sub: userId });
+  }
+
+  async signIn(signInDTO: SignInDTO) {
+    const { email, password } = signInDTO;
 
     const user = await this.usersRepository.findUnique({
       where: { email },
@@ -34,7 +38,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const accessToken = await this.jwtService.signAsync({ sub: user.id });
+    const accessToken = await this.generateAccessToken(user.id);
 
     return { accessToken };
   }
@@ -79,9 +83,8 @@ export class AuthService {
       },
     });
 
-    return {
-      name: user.name,
-      email: user.email,
-    };
+    const accessToken = await this.generateAccessToken(user.id);
+
+    return { accessToken };
   }
 }
