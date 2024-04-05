@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { BankAccountsRepository } from 'src/shared/database/repositories/bank-accounts.repository';
 
 @Injectable()
